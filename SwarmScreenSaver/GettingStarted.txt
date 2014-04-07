@@ -1,0 +1,44 @@
+Hello, I hope you enjoy this program. 
+
+To use this screensaver compile the code and rename the swarm.exe created to swarm.scr and copy it to the System32
+subdirectory and select the screensaver, choose configuration and save any changes if you wish and give it a try.
+
+Summary of files in this example:
+
+1.EntryPoint.cs 
+
+This is the class definition nad starting point of the screensaver and code for the various modes of the saver.
+The Main method gets the configuration info from an xml file named Swarm.scr.config.xml if you happen to rename
+the executable as swarm.scr.  The xml config reader creates a new default config over the old if there are new 
+options added in new versions of this program.
+
+In the /s case an instance of the ScreenSaver class is created and calls RunMeTillShutdown to show the screensaver 
+in full-screen mode until it's time to shut down.
+
+/p is the branch that creates an instance of MiniPreview which draws to the mini-preview window in Display Properties.
+
+2. ConfigForm.cs This is the configuration screen for the screensaver ....
+
+3. SwarmScreenSaverForm.cs This is the screen that covers the monitor screens and shows the results of the 
+   screensaver.
+
+4. StructsAndFunctions.cs is a file that defines some commonly used structures and a class called CommonFunctions 
+   that contain random  number generation routines, and some color contrast adjustment routines so that the color 
+   chosen for the graphics will not be so dark as to be invisible over the black background.
+
+I use the load event to initialize my double-buffering drawing stuff and then the ScreensSaver classes while loop 
+invokes the forms to draw and calls the DoEvents to make the drawing actually show. There are two delegates that are
+passed to the forms. One is used by the forms to notify the caller that it is done drawing and it's time to display
+the results via Application.DoEvents() and then repaint. The strange thing is that the forms can draw all they want
+but NOTHING will show up on the screens until DoEvents is called. Up to 100 swarms can be on a screen, but you will
+probably need a super computer from the year 2020 to do it! :)
+
+Within instances ScreenSaverForm is an event handler called *ScreenSaverForm_Paint* that should contain the code to
+call your drawing routines.  When the user moves the mouse, clicks or presses a key, the form calls the ShuttingDown
+delegate of the caller and the forms are closed and the program exits.
+
+NOTICE: I created a new class file called XmlSwarmScreenSaverConfig.cs, the actual class inside is shorter, 
+but this class saves the configuration stuff in an xml format file instead of the registry.
+
+Good luck to you and best wishes that this sample will show you how to write a practically complete screensaver
+that appears to be the only one that does multiple screens on one system!
